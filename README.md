@@ -26,9 +26,10 @@ fastapi-skeleton/
 │   │   ├── lifespan.py         # Startup/shutdown events
 │   │   └── router.py           # Root router mapper
 │   ├── models/
-│   │   ├── base.py             # Base model (id, timestamps)
-│   │   ├── database.py         # Async DB session manager
-│   │   └── user.py             # Sample User model
+│   │   └── postgres/
+│   │       ├── base.py         # Base model (id, timestamps)
+│   │       ├── database.py     # Async DB session manager
+│   │       └── user.py         # Sample User model
 │   ├── api/v1/endpoints/       # API endpoints
 │   ├── schemas/                # Pydantic schemas
 │   └── common/                 # Helpers, exceptions, dependencies
@@ -143,6 +144,8 @@ python3 cli/main.py db seed
 |---------|-------------|
 | `db migrate` | Apply all pending migrations |
 | `db migrate -m "message"` | Generate new migration |
+| `db upgrade [revision]` | Upgrade to specific revision (default: head) |
+| `db downgrade <revision>` | Downgrade to specific revision |
 | `db rollback -s 1` | Rollback last migration |
 | `db stamp head` | Sync Alembic tracking (fixes common errors) |
 | `db current` | Show current revision |
@@ -172,6 +175,10 @@ python cli/main.py server routes    # List all routes
 ```bash
 python cli/main.py db migrate                    # Apply migrations
 python cli/main.py db migrate -m "add users"    # Create new migration
+python cli/main.py db upgrade                   # Upgrade to head
+python cli/main.py db upgrade abc123            # Upgrade to specific revision
+python cli/main.py db downgrade -1              # Downgrade 1 step
+python cli/main.py db downgrade base            # Downgrade to empty database
 python cli/main.py db rollback -s 1             # Rollback 1 migration
 python cli/main.py db stamp head                # Stamp database
 python cli/main.py db seed                      # Seed initial data
