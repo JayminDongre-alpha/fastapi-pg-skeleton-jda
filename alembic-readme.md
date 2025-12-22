@@ -106,6 +106,8 @@ python3 cli/main.py db migrate
 |---------|-------------|
 | `db migrate` | Apply all pending migrations |
 | `db migrate -m "message"` | Generate new migration |
+| `db upgrade [revision]` | Upgrade to specific revision (default: head) |
+| `db downgrade <revision>` | Downgrade to specific revision |
 | `db rollback -s 1` | Rollback last migration |
 | `db current` | Show current revision |
 | `db history` | Show migration history |
@@ -438,6 +440,8 @@ psql -U postgres -d fastapi_skeleton -c "SELECT 1;"
 |---------|---------|-------------|
 | `db migrate` | | Apply all pending migrations |
 | `db migrate` | `-m, --message TEXT` | Generate new migration with message |
+| `db upgrade` | `[REVISION]` | Upgrade to specific revision (default: head) |
+| `db downgrade` | `REVISION` | Downgrade to specific revision (e.g., `-1`, `base`, hash) |
 | `db rollback` | `-s, --steps INT` | Rollback N migrations (default: 1) |
 | `db current` | | Show current database revision |
 | `db history` | | Show all migration history |
@@ -454,6 +458,13 @@ python3 cli/main.py db migrate -m "Initial" # Generate first migration
 python3 cli/main.py db migrate              # Apply migration
 python3 cli/main.py db seed                 # Add seed data
 python3 cli/main.py db current              # Verify status
+
+# Upgrade/Downgrade examples
+python3 cli/main.py db upgrade              # Upgrade to head
+python3 cli/main.py db upgrade abc123       # Upgrade to specific revision
+python3 cli/main.py db downgrade -1         # Downgrade 1 step
+python3 cli/main.py db downgrade base       # Downgrade to empty database
+python3 cli/main.py db downgrade abc123     # Downgrade to specific revision
 ```
 
 ---

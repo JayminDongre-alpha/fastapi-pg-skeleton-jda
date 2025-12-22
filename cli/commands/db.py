@@ -119,3 +119,23 @@ def current() -> None:
 def history() -> None:
     """Show database migration history."""
     subprocess.run(["alembic", "history", "--verbose"], check=False)
+
+
+@app.command()
+def upgrade(
+    revision: str = typer.Argument(default="head", help="Target revision (default: head)"),
+) -> None:
+    """Upgrade database to a specific revision."""
+    console.print(f"[yellow]Upgrading database to: {revision}[/yellow]")
+    subprocess.run(["alembic", "upgrade", revision], check=False)
+    console.print("[green]Upgrade complete![/green]")
+
+
+@app.command()
+def downgrade(
+    revision: str = typer.Argument(..., help="Target revision (e.g., 'base', '-1', or revision hash)"),
+) -> None:
+    """Downgrade database to a specific revision."""
+    console.print(f"[yellow]Downgrading database to: {revision}[/yellow]")
+    subprocess.run(["alembic", "downgrade", revision], check=False)
+    console.print("[green]Downgrade complete![/green]")
